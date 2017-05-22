@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
-
-
-
-
-
-const heroes = []
-
+import ListHeroes from './listHeroes'
 
 class App extends Component {
-  
+
+ constructor(props){
+  super(props)
+  this.state={
+    heroes : []
+  }
+ }
   
   componentWillMount(){
-    console.log('1')
     let self = this
   axios.get('https://api.opendota.com/api/heroStats')
   .then(function (response) {
-    // console.log(response);
-    self.heroes = response.data;
-    // console.log(self.heroes)
+    self.setState({heroes : response.data})
+   
   })
   .catch(function (error) {
     console.log(error);
@@ -28,22 +26,13 @@ class App extends Component {
 
 
   render() {
-    console.log('2')
-    console.log(heroes)
+
     return (
-      <ul>
-        {heroes.map((hero)=>{
-          return(
-            <li> {hero.localized_name} {hero.primary_attr} {hero.attack_type} {hero.localized_name}</li>
-          )
-        })
-        }
-        </ul>
+      <ListHeroes  heros={this.state.heroes}/>
     )
   }
 
   componentDidMount(){
-console.log('3')
 
 }
 }
